@@ -59,11 +59,14 @@ CREATE TABLE Enrolled (
 Groups	[[[advisor], [examiner]], [[group_name], [group_id]]]
 
 ### Cardinality
-# 
+# N is the random number of rows to be generated
+Students.name = 0.9N
+
 # Specify participation constraints
 # =[x,y]= -> Total participation
 # -[x,y]- -> Partial participation
 
-Groups=[1,n]=Enrolled-[3,4]-Students
+Groups = Enrolled - Students
 
-
+# Groups=[1,n]=Enrolled-[3,4]-Students
+Group.1 = Enrolled - Students.4
