@@ -25,9 +25,10 @@
 
 CREATE TABLE Students (
    	student_id id,
-    name name,
+    	name name,
 	department department,
-	PRIMARY KEY (student_id)
+	PRIMARY KEY (student_id),
+	FOREIGN KEY (student_id) REFERENCES Persons(person_number)
 );
 
 CREATE TABLE Groups (
@@ -48,7 +49,7 @@ CREATE TABLE Enrolled (
 
 ### Functional dependencies
 #
-# Please specify functional dependencies in the format
+# Please specifiy functional dependencies in the format
 # The functional dependency [primary key] -> [all attributes] can be omitted
 # If a table is not listed it is assumed that it has no other functional dependencies
 #
