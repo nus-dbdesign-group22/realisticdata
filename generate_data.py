@@ -37,6 +37,7 @@ def read_input(input_directory, input_file):
     with open(input_file, 'r') as file:
         line = file.readline()
         tables = {}
+        n_rows = 10
         while line:
             # Remove indentation, whitespaces, etc.
             line = line.strip()
@@ -48,11 +49,34 @@ def read_input(input_directory, input_file):
             elif line.startswith("CREATE TABLE"):
                 create_table(file, line, tables)
             line = file.readline()
+        add_rows(tables, n_rows)
+        for key in tables.keys():
+            print(tables[key])
 
     with open('results.txt', 'w') as results:
         results.write("We are currently working on this part...\n")
         results.write("\n")
         results.write("Welcome back later :)")
+
+
+def add_rows(tables, n):
+    for key in tables.keys():
+        df = tables[key]
+        columns = list(df.columns)
+        try:
+            columns.remove("PRIMARY_KEY")
+        except ValueError:
+            pass
+        try:
+            columns.remove("FOREIGN_KEYS")
+        except ValueError:
+            pass
+        for i in range(n):
+            data = []
+            for j in range(len(columns)):
+                data.append(chr(97 + j) + str(i + 1))
+            df = pd.concat([df, pd.DataFrame([data], columns=columns, index=[i+1])])
+        tables[key] = df
 
 
 def create_table(file, line, tables):
@@ -64,7 +88,7 @@ def create_table(file, line, tables):
     :return:        Updates the tables dictionary
     """
     statement = line.split(" ")
-    df = pd.DataFrame(index = ['0'])
+    df = pd.DataFrame(index=['0'])
     while True:
         line = file.readline()
         statement.extend(re.split("\W+", str(line)))
