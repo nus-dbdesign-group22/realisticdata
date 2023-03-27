@@ -4,11 +4,12 @@ A simple commandline tool to generate mock data for databases.
 
 ## Usage
 
-To use the tool, python3 and `make` is required on the system.
+To use the tool, `python3` and `make` is required on the system.
 
-Run `make build` to set up the python environment and install dependencies automatically.
+1. Run `make build`. This will do all the setup.
 
-Then use the `run.sh` script to run the tool. An example input file is included in the `example` folder. (Remember to `chmod +x run.sh`)
+2. Use `run.sh` to run the tool. An example input file is included in the `example` folder.
+    - (if run.sh is not executable remember to run `chmod +x run.sh`)
 
 ```
 ./run.sh -i example/input.txt
