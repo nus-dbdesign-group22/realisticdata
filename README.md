@@ -29,3 +29,19 @@ For developers: To set up the development environment:
 - Run `make install`
 - Test run using `./run.sh -i example/input.txt` 
     - (if run.sh is not executable remember to run `chmod +x run.sh`)
+
+*Important:* Remember to activate the python virtual environment on the commandline when you do dev work:
+
+```
+source ./venv/bin/activate
+```
+
+You can then use `deactivate` to exit the virtual environment.
+
+To install new dependencies or package:
+
+- Make sure you activated venv
+- `pip install whatever`
+- `pip freeze > requirements.txt`
+
+So that the dependencies are recorded and committed to version control.
