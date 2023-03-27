@@ -15,7 +15,11 @@ To use the tool, `python3` and `make` is required on the system.
 ./run.sh -i example/input.txt
 ```
 
-Use `run.sh -h` to see all the flags available. Check the example input file for all the customization options available.
+Use `./run.sh -h` to see all the flags available. Check the example input file for all the customization options available.
+
+## Input syntax
+
+Refer to [this doc in the example folder](./example/README.md)
 
 ## Development
 

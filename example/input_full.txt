@@ -1,0 +1,64 @@
+#
+# This is an example input file that contains ALL of the features that this tool can offer.
+# specify this input with the -i flag when you run the program to see the output.
+#
+# ./run.sh -i example/input_full.txt > out.csv
+#
+
+section:schema
+
+table students amount=100 (
+    id id primary_key
+    first_name first_name
+    last_name last_name
+    email email max_length=50
+    graduation_year number range=2000..2022
+)
+
+table courses amount=10 (
+    id id primary_key
+    name string
+    instructor_id id reference=>instructors.id
+    department_id id reference=departments.id
+    description text
+    credits number range=1..4
+)
+
+table instructors amount=15 (
+    id id primary_key
+    first_name first_name
+    last_name last_name
+    email email max_length=50
+    hire_date date range=1/1/1980..31/12/2022
+    department_id id reference=departments.id
+)
+
+table departments=10 (
+    id id primary_key
+    name string max_length=50
+)
+
+table enrollments (
+    id id primary_key
+    student_id id reference=students.id
+    course_id id reference=courses.id
+    semester string values=Fall,Spring,Special
+    year number range range=2000..2022
+    grade values='A+',A,"A-",B+,B,B-,'C+','C','C-',D+,D,D-,F
+)
+
+table prerequisites amount=..10(
+    id id primary_key
+    course_id id reference=courses.id
+    prerequisite_course_id id reference=courses.id
+)
+
+#
+# Dependencies section is optional and defines any functional dependencies or
+# multi-valued dependencies that is not reflected in the schema section.
+
+section:dependencies
+
+table prerequisites(
+    course_id -> prerequisite_course_id
+)
