@@ -2,6 +2,8 @@
 
 There are two main sections of the input file: `schema` and `dependencies`. Sections are denoted by the line `section:schema` or `section:dependencies` at the beginning of each section. `schema` section defines the table names, as well as field names, types, and other requirements for each fields. `dependencies` section defines any functional dependencies or multi-valued dependencies that are not reflected in the schema section. Every input file must include at least the `schema` section. `dependencies` section is optional.
 
+Please see file `example/input_full.txt` for an almost-complete example of each and every option below.
+
 ## I. Schema section
 
 ### Tables
@@ -41,7 +43,7 @@ List of all `[field_type]`s and all their corresponding `[field_options]`:
     - `decimal_places={number}` only applies when `decimal=true`. Specify exact decimal places. Can use `{min}..{max}` for flexible decimal places.
 - `id`: represent numerical id of a row.
     - if `primary_key` option is specified, the field will be a unique self-incrementing integer.
-    - if `reference` option is specified, the field will be a foreign key referencing the id of another table. See further detail for the `reference` option below.
+    - if `reference` option is specified, the field will be a foreign key referencing the id of another table. This also applies if `reference` option is not specified in-line, but declared outside of table declaration.  See further detail for the `reference` option below.
     - if neither `primary_key` nor `reference` option is specified, the field will be a random unique integer number.
 - `first_name`: random person's first name
     - inherit all of `string`'s options
@@ -75,9 +77,19 @@ These field options applies to ALL field types:
 - `nullable` or `nullable={percentage}`: can have NULL in some rows. If `percentage` is specified, how much of the column is NULL. 0% means no NULL 100$ means all NULL. Cannot be used with `id primary_key`.
 - `emptyable` or `emptyable={percentage}`: can be empty for some rows. If `percentage` is specified, how much of the column is empty. 0% means no row is empty 100$ means all row is empty. Can only be used with `string` and `string`-inherited types.
 
+### Individual references
+
+Table field references can be declared outside of `table`:
+
+```
+reference: {table_name}.{field_name} {relationship} {table_name}.{field_name}
+```
+
+The line must start with `reference:`. `relationship` must be of `>` `~` `<` or `<>` and cannot be empty.
+
 ## II. Dependencies section
 
-Syntax for each table within the dependencies section is as follows:
+You can declare dependencies that happens within a table as follows:
 
 ```
 table {table_name} (
@@ -87,3 +99,8 @@ table {table_name} (
 ...
 ```
 
+You can also declare cross-table dependencies with individual lines:
+
+```
+[{table_name}.{field_name}...] -> [{table_name}.{field_name}...]
+```
