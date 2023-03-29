@@ -1,6 +1,4 @@
-class Generator:
-    def __init__(self, amountToGenerate):
-        self.amountToGenerate = amountToGenerate
 
+class Generator:
     def generate(self):
         print("im generating the data!")
