@@ -45,10 +45,11 @@ table enrollments (
     course_id id reference=>courses.id
     semester string values=Fall,Spring,Special
     year number range range=2000..2022
-    grade values='A+',A,"A-",B+,B,B-,'C+','C','C-',D+,D,D-,F
+    grade string values='A+',A,"A-",B+,B,B-,'C+','C','C-',D+,D,D-,F
 )
 
-table prerequisites amount=..10(
+# table prerequisites amount=..10 (
+table prerequisites amount=10 (
     id id primary_key
     course_id id reference=courses.id
     prerequisite_course_id id reference=courses.id

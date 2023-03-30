@@ -13,9 +13,9 @@ COLUMN_DATATYPES = [
 ]
 
 class GeneratorSettings:
-    tables = []
-    references = []
-    dependencies = []
+    tables: list[Table] = []
+    references: list[Reference] = []
+    dependencies: list[Dependency] = []
 
 class Column:
     table_name = ""
@@ -61,7 +61,7 @@ class FullColumnName:
         return self.table + "." + self.column
 
 class Reference:
-    def __init__(self, column1: FullColumnName, column2: FullColumnName):
+    def __init__(self, column1: FullColumnName, column2: FullColumnName, relationship: str):
         self.column1 = column1
         self.column2 = column2
         if not relationship:

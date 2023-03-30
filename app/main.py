@@ -1,6 +1,7 @@
 import argparse
 
 from reader import InputReader
+from generator import Generator
 
 def main():
     # Defining and parsing the command line flags
@@ -15,4 +16,5 @@ def main():
 
     input_reader = InputReader(args.input, args.output, args.format)
     generatorSettings = input_reader.read_input()
-    
+    generator = Generator(generatorSettings)
+    generator.generate()
