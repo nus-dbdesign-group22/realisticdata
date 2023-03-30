@@ -2,40 +2,91 @@ import argparse
 import pandas as pd
 import re
 
-def readfile(input_file):
-    """
-    Function that reads the input from the user.
+from datatypes import GeneratorSettings
 
-    :param input_directory: Directory with the input file
-    :param input_file:      File with the ER Design, formatted as specified
-    :return                 Write a results.txt file with the result to input_directory
-    """
+class InputReader:
+    def __init__(self, input_file, output_file, output_format):
+        # init variables that was passed in, and their defaults
+        self.input_file = ""
+        if input_file:
+            self.input_file = input_file
+        self.output_file = ""
+        if output_file:
+            self.output_file = output_file
+        self.output_format = "csv"
+        if output_format:
+            self.output_format = output_format
+        # init other internal class variables
+        self.file = self.line = None
+        self.lineNum = 1
+        self.current_section = ""
+        self.parsedInput = GeneratorSettings()
 
-    with open(input_file, 'r') as file:
-        line = file.readline()
-        tables = {}
-        n_rows = 10
-        while line:
-            # Remove indentation, whitespaces, etc.
-            line = line.strip()
-            # Ignore comments
-            if len(line) == 0:
-                pass
-            elif line.startswith("#"):
-                pass
-            elif line.startswith("CREATE TABLE"):
-                create_table(file, line, tables)
-            line = file.readline()
-        add_rows(tables, n_rows)
-        for key in tables.keys():
-            print(tables[key])
+    def read_table_schema(self):
+        # TODO implement function
+        pass
 
-    with open('results.txt', 'w') as results:
-        results.write("We are currently working on this part...\n")
-        results.write("\n")
-        results.write("Welcome back later :)")
+    def read_table_dependencies(self):
+        # TODO implement function
+        pass
 
+    def read_standalone_reference(self): 
+        # TODO implement function
+        pass
 
+    def read_standalone_dependency(self):
+        # TODO implement function
+        pass
+
+    def read_input(self) -> GeneratorSettings:
+        with open(self.input_file, 'r') as self.file:
+            self.line = self.file.readline()
+            while self.line:
+                # Remove trailing and leading indentation, whitespaces, etc.
+                self.line = self.line.strip()
+
+                # Ignore empty lines
+                if len(self.line) == 0:
+                    pass
+
+                # Ignore comments
+                elif self.line.startswith("#"):
+                    pass
+
+                # reading section declarations
+                elif self.line == "section:schema":
+                    current_section = "schema"
+                elif self.line == "section:dependencies":
+                    current_section = "dependencies"
+
+                # reading in table statements
+                elif self.line.startswith("table"):
+                    if current_section == "schema":
+                        self.read_table_schema()
+                    elif current_section == "dependencies":
+                        self.read_table_dependencies()
+
+                # reading in standalone reference statements
+                elif self.line.startswith("reference:"):
+                    if current_section == "schema":
+                        self.read_standalone_reference()
+                    elif current_section == "dependencies":
+                        raise Exception("Invalid dependency declaration at line " + str(self.lineNum))
+
+                # reading in standalone dependency statements
+                else:
+                    if current_section != "dependencies":
+                        raise Exception("Invalid input at line " + str(self.lineNum))
+                    success = self.read_standalone_dependency()
+                    if not success:
+                        raise Exception("Invalid input at line " + str(self.lineNum))
+                
+                self.lineNum = self.lineNum +1
+                self.line = self.file.readline()
+        
+        return 
+
+# old function to read and generate columns
 def add_rows(tables, n):
     for key in tables.keys():
         df = tables[key]
@@ -55,7 +106,7 @@ def add_rows(tables, n):
             df = pd.concat([df, pd.DataFrame([data], columns=columns, index=[i+1])])
         tables[key] = df
 
-
+# old function to read and generate tables
 def create_table(file, line, tables):
     """
     Iterates through the text file until the end of the CREATE TABLE statement is found, while building the table.
@@ -130,16 +181,3 @@ def create_table(file, line, tables):
             i += 1
     print(df)
 
-def readinput():
-    parser = argparse.ArgumentParser(
-        description='generate realistic mock data based on complex user inputs',
-    )
-
-    parser.add_argument('-i', '--input', help='path to the input file', required=True)
-    parser.add_argument('-o', '--output', help='(optional) path to the output file. If not specified will print to stdout')
-    parser.add_argument('-f', '--format', help='(optional) output format -- options are: csv, sql. Default is csv (feature is WIP)')
-    args = parser.parse_args()
-
-    input_file = args.input
-
-    readfile(input_file)
