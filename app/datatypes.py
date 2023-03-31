@@ -13,19 +13,19 @@ COLUMN_DATATYPES = [
 ]
 
 class GeneratorSettings:
-    tables: list[Table] = []
+    tables: dict[str, Table] = {}
     references: list[Reference] = []
     dependencies: list[Dependency] = []
 
 class Column:
-    table_name = ""
-
     def __init__(self, name: str, datatype: str):
         if datatype not in COLUMN_DATATYPES:
             raise Exception("column type " + datatype + " invalid")
-        self.name = name
-        self.datatype = datatype
-        self.options = {}
+        self.name: str = name
+        self.datatype: str = datatype
+        self.table_name: str = ""
+        self.options: dict[str, str] = {}
+        self.generation_priority: int = 0 # to be used by the generator
 
     def set_option(self, option: str, value: str):
         # TODO validate option before adding it
@@ -42,20 +42,20 @@ class Table:
         self.name = name
         self.amount = amount
         self.primary_key = None
-        self.columns = []
+        self.columns: dict[str, Column] = {}
     
     def add_column(self, column: Column):
         column.table_name = self.name
-        self.columns.append(column)
+        self.columns[column.name]= column
 
 
 # QualifiedColumnName is a representation of a column in a table 
 # with the format {table_name}.{column_name}
 class FullColumnName:
-    def __init__(self, longname):
+    def __init__(self, longname: str):
         table_name, column_name = longname.split(".")
-        self.table = table_name
-        self.column = column_name
+        self.table: str = table_name
+        self.column: str = column_name
 
     def __repr__(self):
         return self.table + "." + self.column

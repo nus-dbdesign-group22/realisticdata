@@ -74,7 +74,7 @@ class InputReader:
             self.line = self.file.readline()
             self.lineNum += 1
 
-        self.parsedInput.tables.append(newTable)
+        self.parsedInput.tables[table_name] = newTable
 
     def read_table_dependencies(self):
         words = self.line.split(" ")

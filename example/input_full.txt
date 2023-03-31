@@ -19,7 +19,7 @@ table courses amount=10 (
     id id primary_key
     name string
     instructor_id id reference=>instructors.id
-    department_id id reference=>departments.id
+    department_id id
     description text
     credits number range=1..4
 )
@@ -34,7 +34,7 @@ table instructors amount=15 (
     department_id id reference=>departments.id
 )
 
-table departments=10 (
+table departments amount=10 (
     id id primary_key
     name string max_length=50
 )
@@ -51,8 +51,8 @@ table enrollments (
 # table prerequisites amount=..10 (
 table prerequisites amount=10 (
     id id primary_key
-    course_id id reference=courses.id
-    prerequisite_course_id id reference=courses.id
+    course_id id reference=~courses.id
+    prerequisite_course_id id reference=>courses.id
 )
 
 section:dependencies
