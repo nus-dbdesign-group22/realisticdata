@@ -4,6 +4,7 @@ class Generator:
     def __init__(self, settings: GeneratorSettings):
         self.settings = settings
         self.calculated_order: dict[FullColumnName, bool] = {}
+        self.order_of_generation: list[list[FullColumnName]] = []
 
     def preprocess_reference(self):
         # step 1: convert all reference declared in column options into standalone reference objects
@@ -72,6 +73,15 @@ class Generator:
                 if not self.calculated_order.get(column_name, False):
                     self.recursive_calculate_order(column_name)
 
+        # build a list representing the order of generation
+        for _, table in self.settings.tables.items():
+            for _, column in table.columns.items():
+                while len(self.order_of_generation) <= column.generation_priority:
+                    self.order_of_generation.append([])
+                self.order_of_generation[column.generation_priority].append(column.get_name())
+        # now reverse it
+        self.order_of_generation.reverse()
+
     def generate(self):
         # pre-processing and data preparation steps
         self.preprocess_reference()
@@ -80,3 +90,6 @@ class Generator:
 
         # start actually generating
         print("im generating!")
+        for listOfColumn in self.order_of_generation:
+            for column in listOfColumn:
+                print("im generating the column " + str(column))
