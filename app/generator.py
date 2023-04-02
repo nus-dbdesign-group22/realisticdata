@@ -1,4 +1,4 @@
-from datatypes import Column, GeneratorSettings, Reference, FullColumnName
+from datatypes import Column, GeneratorSettings, Reference, FullColumnName, BaseTypeGenerator
 
 class Generator:
     def __init__(self, settings: GeneratorSettings):
@@ -23,11 +23,25 @@ class Generator:
 
         # step 2: go through all references and add unique constraint to all 
         # "one" side in all "one-to-many" and "many-to-one" relationships
+        # additionally, let the column's generator know of the other column's values so it can reference them
         for reference in self.settings.references:
             if reference.relationship == "<" or reference.relationship == "~":
                 self.settings.tables[reference.column1.table].columns[reference.column1.column].options["unique"]="true"
+                self.settings.tables[reference.column2.table].columns[reference.column2.column].generator.set_referencing_values(
+                    self.settings.tables[reference.column1.table].columns[reference.column1.column].generated
+                )
             if reference.relationship == ">" or reference.relationship == "~":
                 self.settings.tables[reference.column2.table].columns[reference.column2.column].options["unique"]="true"
+                self.settings.tables[reference.column1.table].columns[reference.column1.column].generator.set_referencing_values(
+                    self.settings.tables[reference.column2.table].columns[reference.column2.column].generated
+                )
+            if reference.relationship == "<>":
+                self.settings.tables[reference.column1.table].columns[reference.column1.column].generator.set_referencing_values(
+                    self.settings.tables[reference.column2.table].columns[reference.column2.column].generated
+                )
+                self.settings.tables[reference.column2.table].columns[reference.column2.column].generator.set_referencing_values(
+                    self.settings.tables[reference.column1.table].columns[reference.column1.column].generated
+                )
     
     def preprocess_primary_key(self):
         # add unique constraint to all primary key
@@ -41,9 +55,9 @@ class Generator:
         # build a list of dependents
         dependents: list[FullColumnName] = []
         for reference in self.settings.references:
-            if column_name == reference.column1 and reference.relationship == "<":
+            if column_name == reference.column1 and reference.relationship == ">":
                 dependents.append(reference.column2)
-            if column_name == reference.column2 and reference.relationship == ">":
+            if column_name == reference.column2 and reference.relationship == "<":
                 dependents.append(reference.column1)
         for dependency in self.settings.dependencies:
             if column_name in dependency.LHS:
@@ -62,10 +76,18 @@ class Generator:
         return current_column.generation_priority
     
     def preprocess_calculate_order(self):
+        # first, ALL primary keys gets to generate first
+        for _, table in self.settings.tables.items():
+            for _, column in table.columns.items():
+                if "primary_key" in column.options:
+                    column.generation_priority += 1
+
         # iterate through all references
         for reference in self.settings.references:
-            if not self.calculated_order.get(reference.column1, False):
+            if reference.relationship == "<" and not self.calculated_order.get(reference.column1, False):
                 self.recursive_calculate_order(reference.column1)
+            if reference.relationship == ">" and not self.calculated_order.get(reference.column2, False):
+                self.recursive_calculate_order(reference.column2)
         
         # iterate through all dependencies
         for dependency in self.settings.dependencies:
@@ -81,6 +103,28 @@ class Generator:
                 self.order_of_generation[column.generation_priority].append(column.get_name())
         # now reverse it
         self.order_of_generation.reverse()
+    
+    def prepare_generator(self, column: Column):
+        for dependency in self.settings.dependencies:
+            if column.get_name() in dependency.RHS:
+                for LHS_column_name in dependency.LHS:
+                    LHS_column = self.settings.tables[LHS_column_name.table].columns[LHS_column_name.column]
+                    column.generator.set_dependent_column(LHS_column.generated)
+    
+    def print_result(self):
+        for _, table in self.settings.tables.items():
+            print("table: " + table.name + ":")
+            row=""
+            for column_name in table.columns_ordering:
+                row=row+column_name+"\t"
+            print(row)
+            for i in range(table.amount):
+                row=""
+                for column_name in table.columns_ordering:
+                    row=row+str(table.columns[column_name].generated[i])+"\t"
+                print(row)
+            print("-----")
+
 
     def generate(self):
         # pre-processing and data preparation steps
@@ -89,7 +133,13 @@ class Generator:
         self.preprocess_calculate_order()
 
         # start actually generating
-        print("im generating!")
-        for listOfColumn in self.order_of_generation:
-            for column in listOfColumn:
-                print("im generating the column " + str(column))
+        for list_of_columns in self.order_of_generation:
+            for column_name in list_of_columns:
+                table = self.settings.tables[column_name.table]
+                column = table.columns[column_name.column]
+                self.prepare_generator(column)
+                for i in range(table.amount):
+                    column.generated.append(column.generator.get_next_row(i))
+
+        # print the result (output WIP)
+        self.print_result()

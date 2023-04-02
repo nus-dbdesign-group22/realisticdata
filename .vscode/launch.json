@@ -9,7 +9,7 @@
             "type": "python",
             "request": "launch",
             "program": "app",
-            "args": ["-i", "example/input_full.txt"],
+            "args": ["-i", "example/input_number.txt"],
             "console": "integratedTerminal",
             "justMyCode": true
         },

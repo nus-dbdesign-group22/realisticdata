@@ -1,16 +1,19 @@
 from __future__ import annotations
+from generator_types.base import BaseTypeGenerator
+from generator_types.stringtype import String
+from generator_types.number import Number
 
-COLUMN_DATATYPES = [
-    "string",
-    "number", 
-    "id", 
-    "first_name", 
-    "last_name", 
-    "email", 
-    "text", 
-    "date", 
-    "time",
-]
+COLUMN_DATATYPES: dict[str, BaseTypeGenerator] = {
+    "string": String,
+    "number": Number, 
+    "id": BaseTypeGenerator, 
+    "first_name": BaseTypeGenerator, 
+    "last_name": BaseTypeGenerator, 
+    "email": BaseTypeGenerator, 
+    "text": BaseTypeGenerator, 
+    "date": BaseTypeGenerator, 
+    "time": BaseTypeGenerator,
+}
 
 class GeneratorSettings:
     tables: dict[str, Table] = {}
@@ -19,13 +22,15 @@ class GeneratorSettings:
 
 class Column:
     def __init__(self, name: str, datatype: str):
-        if datatype not in COLUMN_DATATYPES:
+        if datatype not in COLUMN_DATATYPES.keys():
             raise Exception("column type " + datatype + " invalid")
         self.name: str = name
         self.datatype: str = datatype
         self.table_name: str = ""
         self.options: dict[str, str] = {}
+        self.generator: BaseTypeGenerator = COLUMN_DATATYPES[datatype](self.options)
         self.generation_priority: int = 0 # to be used by the generator
+        self.generated: list[any] = []
 
     def set_option(self, option: str, value: str):
         # TODO validate option before adding it
@@ -43,10 +48,12 @@ class Table:
         self.amount = amount
         self.primary_key = None
         self.columns: dict[str, Column] = {}
+        self.columns_ordering: list[str] = []
     
     def add_column(self, column: Column):
         column.table_name = self.name
         self.columns[column.name]= column
+        self.columns_ordering.append(column.name)
 
 
 # QualifiedColumnName is a representation of a column in a table 
@@ -59,6 +66,14 @@ class FullColumnName:
 
     def __repr__(self):
         return self.table + "." + self.column
+    
+    def __eq__(self, other):
+        if isinstance(other, FullColumnName):
+            return self.table == other.table and self.column == other.column
+        return False
+
+    def __hash__(self):
+        return hash(self.table+self.column)
 
 class Reference:
     def __init__(self, column1: FullColumnName, column2: FullColumnName, relationship: str):

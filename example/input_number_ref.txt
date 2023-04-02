@@ -1,0 +1,27 @@
+section:schema
+
+table ONE (
+    A number
+    B number
+    C number
+    D number
+)
+
+table TWO (
+    E number
+    F number
+    G number
+)
+
+table THREE (
+    H number
+    I number
+    J number
+    K number
+)
+
+reference: ONE.A < TWO.E
+reference: TWO.F > THREE.H
+reference: ONE.B > THREE.I
+reference: ONE.C <> THREE.J
+reference: ONE.D ~ THREE.K

@@ -1,0 +1,37 @@
+section:schema
+
+table ONE (
+    A number range=..5
+    B number range=..5
+    C number range=0..5
+    D number range=0..5
+)
+
+table TWO (
+    E number range=..2
+    F number range=..2
+    G number
+)
+
+table THREE (
+    H number range=..2
+    I number range=..2
+    J number
+    K number
+)
+
+section:dependencies
+
+table ONE (
+    A -> B
+    A -> C
+    C -> D
+)
+
+table TWO (
+    E F -> G
+)
+
+table THREE (
+    H I -> J K 
+)
