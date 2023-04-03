@@ -1,0 +1,10 @@
+section:schema
+
+table ONE amount=20 (
+    A number range=..5
+    B number range=..5 decimal
+    C number range=-10..5 decimal decimal_places=5
+    D number range=-100..500
+    E number decimal
+    F number decimal decimal_places=10
+)

@@ -105,11 +105,19 @@ class Generator:
         self.order_of_generation.reverse()
     
     def prepare_generator(self, column: Column):
+        # let the generator know of the FD columns
         for dependency in self.settings.dependencies:
             if column.get_name() in dependency.RHS:
                 for LHS_column_name in dependency.LHS:
                     LHS_column = self.settings.tables[LHS_column_name.table].columns[LHS_column_name.column]
                     column.generator.set_dependent_column(LHS_column.generated)
+        # let the generator know of the related columns
+        for _, table in self.settings.tables.items():
+            for _, column in table.columns.items():
+                if "related" in column.options.keys():
+                    related_column = FullColumnName(column.options["related"])
+                    related_column_values = self.settings.tables[related_column.table].columns[related_column.column].generated
+                    column.generator.set_related_column(related_column_values)
     
     def print_result(self):
         for _, table in self.settings.tables.items():

@@ -14,10 +14,18 @@ class Number(BaseTypeGenerator):
         if len(max_str) > 0:
             max = int(max_str)
         return min, max
+    
+    def random_decimal(self, min_value: int, max_value: int):
+        decimal_places = 3
+        if "decimal_places" in self.options.keys():
+            decimal_places = int(self.options["decimal_places"])
+        return round(random.uniform(min_value, max_value), decimal_places)
 
     def get_next_value(self) -> any:
         min_value = 0
         max_value = 1000
         if "range" in self.options.keys():
             min_value, max_value = self.get_range_option()
+        if "decimal" in self.options.keys():
+            return self.random_decimal(min_value, max_value)
         return random.randint(min_value, max_value)

@@ -3,8 +3,9 @@ import random
 class BaseTypeGenerator:
     def __init__(self, options: dict[str, str]):
         self.options: dict[str, str] = options
-        self.referencing_values: list[any] = []
-        self.dependent_values: list[list[any]] = []
+        self.referencing_values: list[any] = [] # for references / relationships
+        self.dependent_values: list[list[any]] = [] # for functional dependencies
+        self.related_values: list[list[any]] = [] # for any other related columns
         self.generated_dependent_values: dict[any, any] = {}
         self.previously_generated: list[any] = []
 
@@ -13,6 +14,23 @@ class BaseTypeGenerator:
 
     def set_dependent_column(self, dependent_column: list[any]):
         self.dependent_values.append(dependent_column)
+    
+    def set_related_column(self, related_column: list[any]):
+        self.related_values.append(related_column)
+    
+    def get_related_values(self, index: int) -> list[any]:
+        related_values = []
+        if len(self.related_values) > 0:
+            for i in self.related_values:
+                related_values.append(i[index])
+        return related_values
+
+    def get_related_values_as_tuple(self, index:int) -> tuple[any]:
+        related_values = ()
+        if len(self.related_values) > 0:
+            for i in self.related_values:
+                related_values = related_values + (i[index],)
+        return related_values
 
     def get_next_row(self, current_index: int) -> any:
         # if has ref dependence, choose from list of ref values
@@ -25,7 +43,6 @@ class BaseTypeGenerator:
             determinants = ()
             for i in self.dependent_values:
                 determinants = determinants + (i[current_index],)
-            print(determinants)
             if determinants in self.generated_dependent_values.keys():
                 return self.generated_dependent_values[determinants]
             
