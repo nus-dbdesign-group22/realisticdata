@@ -71,5 +71,5 @@ table enrollments (
 
 # instructors can only teach courses from their own department
 # IRL it doesn't always hold but here it's just an example
-instructors.id -> courses.instructor_id
-instructors.department_id -> courses.department_id
+# instructors.id -> courses.instructor_id
+# instructors.department_id -> courses.department_id
