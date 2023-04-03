@@ -115,9 +115,11 @@ class Generator:
         for _, table in self.settings.tables.items():
             for _, column in table.columns.items():
                 if "related" in column.options.keys():
-                    related_column = FullColumnName(column.options["related"])
-                    related_column_values = self.settings.tables[related_column.table].columns[related_column.column].generated
-                    column.generator.set_related_column(related_column_values)
+                    columns = column.options["related"].split(",")
+                    for c in columns:
+                        related_column = FullColumnName(c)
+                        related_column_values = self.settings.tables[related_column.table].columns[related_column.column].generated
+                        column.generator.set_related_column(related_column_values)
     
     def print_result(self):
         for _, table in self.settings.tables.items():
