@@ -2,7 +2,7 @@
 # This is an example input file that contains ALL of the features that this tool can offer.
 # specify this input with the -i flag when you run the program to see the output.
 #
-# ./run.sh -i example/input_full.txt > out.csv
+# ./run.sh -i example/input_full.txt -o output/
 #
 
 section:schema
