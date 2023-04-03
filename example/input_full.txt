@@ -7,7 +7,7 @@
 
 section:schema
 
-table students amount=100 (
+table students amount=200 (
     id id primary_key
     first_name first_name
     last_name last_name
@@ -18,7 +18,7 @@ table students amount=100 (
     fav_colour color
 )
 
-table courses amount=10 (
+table courses amount=25 (
     id id primary_key
     name course_name
     instructor_id id reference=>instructors.id
@@ -27,7 +27,7 @@ table courses amount=10 (
 )
 reference: courses.department_id > departments.id
 
-table instructors amount=15 (
+table instructors amount=20 (
     id id primary_key
     first_name first_name
     last_name last_name
@@ -36,12 +36,12 @@ table instructors amount=15 (
     department_id id reference=>departments.id
 )
 
-table departments amount=10 (
+table departments amount=15 (
     id id primary_key
     name department_name
 )
 
-table enrollments (
+table enrollments amount=200 (
     id id primary_key
     student_id id reference=>students.id
     course_id id reference=>courses.id
@@ -50,8 +50,7 @@ table enrollments (
     grade string values=A+,A,A-,B+,B,B-,C+,C,C-,D+,D,D-,F
 )
 
-# table prerequisites amount=..10 (
-table prerequisites amount=10 (
+table prerequisites (
     id id primary_key
     course_id id reference=~courses.id
     prerequisite_course_id id reference=>courses.id

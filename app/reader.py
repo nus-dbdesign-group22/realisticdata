@@ -5,7 +5,7 @@ import re
 from datatypes import GeneratorSettings, Table, Column, Dependency, FullColumnName, Reference
 
 class InputReader:
-    def __init__(self, input_file, output_file, output_format):
+    def __init__(self, input_file, output_file):
         # init variables that was passed in, and their defaults
         self.input_file = ""
         if input_file:
@@ -14,8 +14,6 @@ class InputReader:
         if output_file:
             self.output_file = output_file
         self.output_format = "csv"
-        if output_format:
-            self.output_format = output_format
         # init other internal class variables
         self.file = self.line = None
         self.lineNum = 1
