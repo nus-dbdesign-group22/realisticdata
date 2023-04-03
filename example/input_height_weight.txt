@@ -3,8 +3,8 @@ section:schema
 table ONE (
     id id
     height height
-    weight weight related=ONE.height
+    weight weight related=ONE.height,ONE.id
     favorite_color color
-    birthday date
+    birthday date range=2010..2013
     submission_time time
 )
