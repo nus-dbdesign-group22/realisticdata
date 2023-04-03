@@ -1,0 +1,7 @@
+section:schema
+
+table ONE (
+    id id
+    height height
+    weight weight related=ONE.height
+)

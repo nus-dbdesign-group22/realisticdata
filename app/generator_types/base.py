@@ -46,7 +46,7 @@ class BaseTypeGenerator:
             if determinants in self.generated_dependent_values.keys():
                 return self.generated_dependent_values[determinants]
             
-        value = self.get_next_value()
+        value = self.get_next_value(self.get_related_values(current_index))
 
         if determinants:
             self.generated_dependent_values[determinants] = value
@@ -56,10 +56,10 @@ class BaseTypeGenerator:
             while True:
                 if value not in self.previously_generated:
                     break
-                value = self.get_next_value()
+                value = self.get_next_value(self.get_related_values(current_index))
             self.previously_generated.append(value)
         
         return value
 
-    def get_next_value(self) -> any:
+    def get_next_value(self, related_values=None) -> any:
         pass

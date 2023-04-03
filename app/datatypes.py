@@ -3,6 +3,8 @@ from generator_types.base import BaseTypeGenerator
 from generator_types.stringtype import String
 from generator_types.number import Number
 from generator_types.id import Id
+from generator_types.height import Height
+from generator_types.weight import Weight
 
 COLUMN_DATATYPES: dict[str, BaseTypeGenerator] = {
     "string": String,
@@ -14,12 +16,28 @@ COLUMN_DATATYPES: dict[str, BaseTypeGenerator] = {
     "text": BaseTypeGenerator, 
     "date": BaseTypeGenerator, 
     "time": BaseTypeGenerator,
+    "height": Height,
+    "weight": Weight,
 }
+
+
+class JointDependency:
+    dependants = []
+
+    def __init__(self, dependants: list[str]):
+        self.dependants = dependants
+
+    def get_joint_dependants(self, column_type: str):
+        joint_dependants = self.dependants.copy()
+        joint_dependants.remove(column_type)
+        return joint_dependants
+
 
 class GeneratorSettings:
     tables: dict[str, Table] = {}
     references: list[Reference] = []
     dependencies: list[Dependency] = []
+    joint_dependencies: list[JointDependency] = [JointDependency(["height", "weight"])]
 
 class Column:
     def __init__(self, name: str, datatype: str):
@@ -83,6 +101,7 @@ class Reference:
         if not relationship:
             relationship = "<>"
         self.relationship = relationship
+
 
 class Dependency:
     LHS = []

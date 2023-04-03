@@ -18,6 +18,6 @@ class Id(BaseTypeGenerator):
         return min, max
     """
 
-    def get_next_value(self) -> any:
+    def get_next_value(self, related_values=None) -> any:
         self.counter += 1
         return self.counter - 1

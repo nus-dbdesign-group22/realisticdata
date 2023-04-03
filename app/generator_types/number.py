@@ -21,7 +21,7 @@ class Number(BaseTypeGenerator):
             decimal_places = int(self.options["decimal_places"])
         return round(random.uniform(min_value, max_value), decimal_places)
 
-    def get_next_value(self) -> any:
+    def get_next_value(self, related_values=None) -> any:
         min_value = 0
         max_value = 1000
         if "range" in self.options.keys():
