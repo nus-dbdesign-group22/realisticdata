@@ -19,4 +19,5 @@ def main():
     generator = Generator(generatorSettings)
     if "output" in parser.parse_args():
         generator.generate(input_reader.output_file)
-    generator.generate()
+    else:
+        generator.generate()
