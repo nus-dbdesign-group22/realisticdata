@@ -20,7 +20,7 @@ table students amount=100 (
 
 table courses amount=10 (
     id id primary_key
-    name string values=Artificial_Intelligence,Machine_Learning,Operating_System,Computer_Graphics,Computer_Architecture,Robotics,Distributed_Computing,Computer_Networks,Computer_Security,Data_Structures
+    name course_name
     instructor_id id reference=>instructors.id
     department_id id
     credits number range=1..4
@@ -38,7 +38,7 @@ table instructors amount=15 (
 
 table departments amount=10 (
     id id primary_key
-    name string values=Computer_Science,Information_Technology,Infocomm_Security,Artificial_Intelligence
+    name department_name
 )
 
 table enrollments (

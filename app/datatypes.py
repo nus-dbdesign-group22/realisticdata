@@ -11,6 +11,8 @@ from generator_types.time import Time
 from generator_types.firstname import FirstName
 from generator_types.lastname import LastName
 from generator_types.email import Email
+from generator_types.coursename import CourseName
+from generator_types.departmentname import DepartmentName
 
 COLUMN_DATATYPES: dict[str, BaseTypeGenerator] = {
     "string": String,
@@ -25,6 +27,8 @@ COLUMN_DATATYPES: dict[str, BaseTypeGenerator] = {
     "time": Time,
     "height": Height,
     "weight": Weight,
+    "course_name": CourseName,
+    "department_name": DepartmentName
 }
 
 
