@@ -5,4 +5,6 @@ table ONE (
     height height
     weight weight related=ONE.height
     favorite_color color
+    birthday date
+    submission_time time
 )

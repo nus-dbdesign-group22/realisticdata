@@ -6,6 +6,8 @@ from generator_types.id import Id
 from generator_types.height import Height
 from generator_types.weight import Weight
 from generator_types.color import Color
+from generator_types.date import Date
+from generator_types.time import Time
 
 COLUMN_DATATYPES: dict[str, BaseTypeGenerator] = {
     "string": String,
@@ -16,8 +18,8 @@ COLUMN_DATATYPES: dict[str, BaseTypeGenerator] = {
     "email": BaseTypeGenerator, 
     "text": BaseTypeGenerator,
     "color": Color,
-    "date": BaseTypeGenerator, 
-    "time": BaseTypeGenerator,
+    "date": Date,
+    "time": Time,
     "height": Height,
     "weight": Weight,
 }
