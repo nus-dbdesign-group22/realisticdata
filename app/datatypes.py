@@ -5,6 +5,7 @@ from generator_types.number import Number
 from generator_types.id import Id
 from generator_types.height import Height
 from generator_types.weight import Weight
+from generator_types.color import Color
 
 COLUMN_DATATYPES: dict[str, BaseTypeGenerator] = {
     "string": String,
@@ -13,7 +14,8 @@ COLUMN_DATATYPES: dict[str, BaseTypeGenerator] = {
     "first_name": BaseTypeGenerator, 
     "last_name": BaseTypeGenerator, 
     "email": BaseTypeGenerator, 
-    "text": BaseTypeGenerator, 
+    "text": BaseTypeGenerator,
+    "color": Color,
     "date": BaseTypeGenerator, 
     "time": BaseTypeGenerator,
     "height": Height,
