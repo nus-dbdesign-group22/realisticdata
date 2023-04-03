@@ -1,3 +1,4 @@
+import random
 import numpy as np
 from generator_types.base import BaseTypeGenerator
 
@@ -20,5 +21,5 @@ class Color(BaseTypeGenerator):
               "Navajo white", "Navy", "Old lace", "Olive drab", "Orange", "Orange red"]
 
     def get_next_value(self, related_values=None) -> any:
-        n = np.random.randint(0, len(self.colors))
-        return self.colors[n]
+        # n = np.random.randint(0, len(self.colors))
+        return random.choice(self.colors)

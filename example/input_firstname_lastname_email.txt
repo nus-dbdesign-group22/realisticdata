@@ -1,0 +1,8 @@
+section:schema
+
+table ONE (
+    id id
+    firstname first_name
+    lastname last_name
+    email email related=ONE.firstname,ONE.lastname
+)
