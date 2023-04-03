@@ -4,8 +4,21 @@ from generator_types.base import BaseTypeGenerator
 
 class Date(BaseTypeGenerator):
 
+    def get_range_option(self) -> tuple[int, int]:
+        raw_str = self.options["range"]
+        delim = raw_str.index("..")
+        min_str = raw_str[:delim]
+        max_str = raw_str[delim + 2:]
+        min = int(min_str)
+        max = int(max_str)
+        return min, max
+
     def get_next_value(self, related_values=None) -> any:
-        year = random.randint(1933, 2020)
+        if "range" in self.options.keys():
+            min_value, max_value = self.get_range_option()
+            year = random.randint(min_value, max_value)
+        else:
+            year = random.randint(1943, 2010)
         month = random.randint(1, 12)
         if year % 4 == 0 and month == 2:
             day = random.randint(1, 29)
