@@ -1,5 +1,6 @@
 from datatypes import Column, GeneratorSettings, Reference, FullColumnName, BaseTypeGenerator
-
+import os
+import csv
 class Generator:
     def __init__(self, settings: GeneratorSettings):
         self.settings = settings
@@ -135,8 +136,23 @@ class Generator:
                 print(row)
             print("-----")
 
+    def generate_output(self, output_directory):
+        os.chdir(output_directory)
+        for _, table in self.settings.tables.items():
+            with open(table.name + ".csv", "w", newline='') as file:
+                writer = csv.writer(file)
+                first_row = []
+                for column_name in table.columns_ordering:
+                    first_row.append(column_name)
+                writer.writerow(first_row)
+                for i in range(table.amount):
+                    row = []
+                    for column_name in table.columns_ordering:
+                        row.append(table.columns[column_name].generated[i])
+                    writer.writerow(row)
 
-    def generate(self):
+
+    def generate(self, output_directory=None):
         # pre-processing and data preparation steps
         self.preprocess_reference()
         self.preprocess_primary_key()
@@ -153,3 +169,5 @@ class Generator:
 
         # print the result (output WIP)
         self.print_result()
+        if output_directory:
+            self.generate_output(output_directory)

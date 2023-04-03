@@ -17,4 +17,6 @@ def main():
     input_reader = InputReader(args.input, args.output, args.format)
     generatorSettings = input_reader.read_input()
     generator = Generator(generatorSettings)
+    if "output" in parser.parse_args():
+        generator.generate(input_reader.output_file)
     generator.generate()
