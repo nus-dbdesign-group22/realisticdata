@@ -11,13 +11,13 @@ table students amount=100 (
     id id primary_key
     first_name first_name
     last_name last_name
-    email email max_length=50
+    email email
     graduation_year number range=2000..2022
 )
 
 table courses amount=10 (
     id id primary_key
-    name string
+    name string values=Computer_Science,Information_Technology,Infocomm_Security,Artificial_Intelligence
     instructor_id id reference=>instructors.id
     department_id id
     description text
@@ -29,14 +29,14 @@ table instructors amount=15 (
     id id primary_key
     first_name first_name
     last_name last_name
-    email email max_length=50
+    email email
     hire_date date range=1/1/1980..31/12/2022
     department_id id reference=>departments.id
 )
 
 table departments amount=10 (
     id id primary_key
-    name string max_length=50
+    name string values=Artificial_Intelligence,Machine_Learning,Operating_System,Computer_Graphics,Computer_Architecture,Robotics
 )
 
 table enrollments (
@@ -45,7 +45,7 @@ table enrollments (
     course_id id reference=>courses.id
     semester string values=Fall,Spring,Special
     year number range range=2000..2022
-    grade string values='A+',A,"A-",B+,B,B-,'C+','C','C-',D+,D,D-,F
+    grade string values=A+,A,A-,B+,B,B-,C+,C,C-,D+,D,D-,F
 )
 
 # table prerequisites amount=..10 (

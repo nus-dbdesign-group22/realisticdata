@@ -1,0 +1,8 @@
+section:schema
+
+table ONE (
+    nameCourses string values=Computer_Science,Information_Technology,Infocomm_Security,Artificial_Intelligence
+    nameDepartment string values=Artificial_Intelligence,Machine_Learning,Operating_System,Computer_Graphics,Computer_Architecture,Robotics
+    semester string values=Fall,Spring,Special
+    grade string values=A+,A,A-,B+,B,B-,C+,C,C-,D+,D,D-,F
+)
