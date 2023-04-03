@@ -59,19 +59,9 @@ table prerequisites amount=10 (
 
 section:dependencies
 
-# each course can only have 1 prerequisite
-# IRL it doesn't happen this way but here it's just an example
-# table prerequisites (
-#     course_id -> prerequisite_course_id
-# )
-
 # each student can only enroll in a course once
 # IRL it doesn't always hold but here it's just an example
 table enrollments (
     student_id course_id -> semester year grade
 )
 
-# instructors can only teach courses from their own department
-# IRL it doesn't always hold but here it's just an example
-# instructors.id -> courses.instructor_id
-# instructors.department_id -> courses.department_id

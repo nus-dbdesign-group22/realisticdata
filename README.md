@@ -4,7 +4,7 @@ A simple commandline tool to generate mock data for databases.
 
 ## Usage
 
-To use the tool, `python3` and `make` is required on the system.
+To use the tool, `python3` and `make` is required on the system. Python version 3.8 is the minimum requirement. The tool will also make use of python's built-in `venv` tool.
 
 1. Run `make build`. This will do all the setup.
 
@@ -19,7 +19,9 @@ Use `./run.sh -h` to see all the flags available. Check the example input file f
 
 ## Input syntax
 
-Refer to [this doc in the example folder](./example/README.md)
+This program requires the user to provide a mandatory input txt file, in a custom-made input format, declaring all the schemas and requirements for data generation. Example input files are provided in the `example` folder.
+
+For comprehensive documentation on input file, refer to [this README file](./example/README.md)
 
 ## Development
 

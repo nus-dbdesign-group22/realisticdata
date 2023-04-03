@@ -52,7 +52,7 @@ class BaseTypeGenerator:
             self.generated_dependent_values[determinants] = value
 
         # if there is a unique flag, generate until we have a unique value
-        if "unique" in self.options.keys() and self.options["unique"]=="true":
+        if "unique" in self.options.keys():
             while True:
                 if value not in self.previously_generated:
                     break
