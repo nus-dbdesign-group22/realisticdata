@@ -2,11 +2,12 @@ from __future__ import annotations
 from generator_types.base import BaseTypeGenerator
 from generator_types.stringtype import String
 from generator_types.number import Number
+from generator_types.id import Id
 
 COLUMN_DATATYPES: dict[str, BaseTypeGenerator] = {
     "string": String,
     "number": Number, 
-    "id": BaseTypeGenerator, 
+    "id": Id,
     "first_name": BaseTypeGenerator, 
     "last_name": BaseTypeGenerator, 
     "email": BaseTypeGenerator, 
