@@ -11,11 +11,7 @@ class String(BaseTypeGenerator):
         # if has FD dependence, check if has already generated, else 
         # need to know current index
         # if have none of those, generate normally
-        if "unique" in options.keys() and options["unique"] == "true":
-            print("yes unique")
-        # if unique then remember it
         if "values" in options.keys():
             values = list(options["values"].split(","))
-            print(values)
-            sample = random.choice(values)
+            sample = random.choice(values).replace("_", " ")
         return sample

@@ -11,16 +11,18 @@ table students amount=100 (
     id id primary_key
     first_name first_name
     last_name last_name
-    email email
+    email email related=students.first_name,students.last_name
     graduation_year number range=2000..2022
+    height height
+    weight weight related=students.height
+    fav_colour color
 )
 
 table courses amount=10 (
     id id primary_key
-    name string values=Computer_Science,Information_Technology,Infocomm_Security,Artificial_Intelligence
+    name string values=Artificial_Intelligence,Machine_Learning,Operating_System,Computer_Graphics,Computer_Architecture,Robotics,Distributed_Computing,Computer_Networks,Computer_Security,Data_Structures
     instructor_id id reference=>instructors.id
     department_id id
-    description text
     credits number range=1..4
 )
 reference: courses.department_id > departments.id
@@ -29,14 +31,14 @@ table instructors amount=15 (
     id id primary_key
     first_name first_name
     last_name last_name
-    email email
-    hire_date date range=1/1/1980..31/12/2022
+    email email related=instructors.first_name,instructors.last_name
+    hire_year date range=1980..2022
     department_id id reference=>departments.id
 )
 
 table departments amount=10 (
     id id primary_key
-    name string values=Artificial_Intelligence,Machine_Learning,Operating_System,Computer_Graphics,Computer_Architecture,Robotics
+    name string values=Computer_Science,Information_Technology,Infocomm_Security,Artificial_Intelligence
 )
 
 table enrollments (
@@ -59,9 +61,9 @@ section:dependencies
 
 # each course can only have 1 prerequisite
 # IRL it doesn't happen this way but here it's just an example
-table prerequisites (
-    course_id -> prerequisite_course_id
-)
+# table prerequisites (
+#     course_id -> prerequisite_course_id
+# )
 
 # each student can only enroll in a course once
 # IRL it doesn't always hold but here it's just an example

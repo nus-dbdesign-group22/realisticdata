@@ -8,7 +8,7 @@ class Height(BaseTypeGenerator):
         mean_height = 170
         mean_weight = 70
         var_h = 15
-        var_w = 30
+        var_w = 15
         cov_h_w = 20
         if related_values:
             weight = related_values[0]

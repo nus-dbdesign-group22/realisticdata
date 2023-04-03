@@ -80,7 +80,7 @@ class Generator:
         # first, ALL primary keys gets to generate first
         for _, table in self.settings.tables.items():
             for _, column in table.columns.items():
-                if "primary_key" in column.options:
+                if "primary_key" in column.options.keys():
                     column.generation_priority += 1
 
         # iterate through all references
