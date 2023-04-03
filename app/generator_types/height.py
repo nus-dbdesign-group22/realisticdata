@@ -7,9 +7,9 @@ class Height(BaseTypeGenerator):
     def get_next_value(self, related_values=None) -> any:
         mean_height = 170
         mean_weight = 70
-        var_h = 15
-        var_w = 15
-        cov_h_w = 20
+        var_h = 10
+        var_w = 10
+        cov_h_w = 10
         if related_values:
             weight = related_values[0]
             cov = np.array([[var_h, cov_h_w], [cov_h_w, var_w]])
